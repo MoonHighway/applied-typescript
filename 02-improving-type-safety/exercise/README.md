@@ -1,4 +1,4 @@
-# Exercise: Library for a Library
+# Exercise: Lib for a Library
 
 In this exercise, we'll be creating a library with the following functions:
 
