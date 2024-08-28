@@ -21,13 +21,13 @@ interface Civilization {
 
 ```diff
 -interface Civilization {
-+interface Civilization<NotablePeopleType> {
++interface Civilization<PeopleType> {
 ```
 
 - Add a property which uses the type variable:
 
 ```typescript
-notablePeople: NotablePeopleType[];
+notablePeople: PeopleType[];
 ```
 
 ## Create types for all the notable people
@@ -58,20 +58,24 @@ const egyptianCivilization: Civilization<Architect | Pharaoh> = {
 Example:
 
 ```typescript
-Civilization<NotablePeople<Architect | true>>
+Civilization<Architect | true>
 ```
 
 ## Create a generic type with a conditional type
 
 ```typescript
-type NotablePeople<PersonType> = PersonType extends Person ? PersonType : never;
+type NotablePeople<PeopleType> = PeopleType extends Person ? PeopleType : never;
 ```
 
-## Update the type annotations for all civilization objects
+## Update the `Civilization` type
 
 Example:
 
 ```diff
--const egyptianCivilization: Civilization<Architect | Pharaoh> = {
-+const egyptianCivilization: Civilization<NotablePeople<Architect | Pharaoh>> = {
+ interface Civilization<PeopleType> {
+   name: string;
+   location: string;
+-  notablePeople: PeopleType[];
++  notablePeople: NotablePeople<PeopleType>[];
+ }
 ```

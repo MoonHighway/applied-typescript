@@ -1,7 +1,7 @@
-interface Civilization<NotablePeopleType> {
+interface Civilization<PeopleType> {
   name: string;
   location: string;
-  notablePeople: NotablePeopleType[];
+  notablePeople: NotablePeople<PeopleType>[];
 }
 
 interface Person {
@@ -15,9 +15,9 @@ type Poet = Person & { occupation: 'Poet' };
 type Philosopher = Person & { occupation: 'Philosopher' };
 type General = Person & { occupation: 'General' };
 
-type NotablePeople<PersonType> = PersonType extends Person ? PersonType : never;
+type NotablePeople<PeopleType> = PeopleType extends Person ? PeopleType : never;
 
-const egyptianCivilization: Civilization<NotablePeople<Architect | Pharaoh>> = {
+const egyptianCivilization: Civilization<Architect | Pharaoh> = {
   name: 'Egyptian',
   location: 'Africa',
   notablePeople: [
@@ -32,7 +32,7 @@ const egyptianCivilization: Civilization<NotablePeople<Architect | Pharaoh>> = {
   ],
 };
 
-const greekCivilization: Civilization<NotablePeople<Poet | Philosopher>> = {
+const greekCivilization: Civilization<Poet | Philosopher> = {
   name: 'Greek',
   location: 'Europe',
   notablePeople: [
@@ -47,7 +47,7 @@ const greekCivilization: Civilization<NotablePeople<Poet | Philosopher>> = {
   ],
 };
 
-const romanCivilization: Civilization<NotablePeople<General | Poet>> = {
+const romanCivilization: Civilization<General | Poet> = {
   name: 'Roman',
   location: 'Europe',
   notablePeople: [
