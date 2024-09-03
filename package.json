@@ -1,5 +1,8 @@
 {
   "name": "applied-typescript",
+  "scripts": {
+    "test": "./scripts/test.sh"
+  },
   "author": "Simon Plenderleith <simon@simonplend.co.uk> (https://simonplend.com/)",
   "devDependencies": {
     "@total-typescript/tsconfig": "^1.0.4",
