@@ -1,4 +1,4 @@
-# Lab: Type Safe Creators 🎬
+# Lab 2: Type Safe Creators 🎬
 
 > **Section 2: Improving Type Safety**
 
