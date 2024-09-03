@@ -1,7 +1,7 @@
-import { movie, show, book, album } from "./data.js";
+import { movie, show, book, album, type LibraryItem } from "./data.js";
 
-export async function fetchApiData() {
-  const data = [movie, show, book, album];
+export async function fetchApiData(): Promise<LibraryItem[]> {
+  const data: LibraryItem[] = [movie, show, book, album];
   const apiResponse = structuredClone(data);
   return apiResponse;
 }

@@ -5,9 +5,3 @@ export async function fetchApiData() {
   const apiResponse = structuredClone(data);
   return apiResponse;
 }
-
-declare const __brand: unique symbol;
-
-export type Brand<BaseType, BrandedName extends string> = BaseType & {
-  [__brand]: BrandedName;
-};

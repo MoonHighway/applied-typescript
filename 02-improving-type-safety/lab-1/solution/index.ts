@@ -54,3 +54,27 @@ describeLibraryItem(book);
 describeLibraryItem(album);
 describeLibraryItem(movie);
 describeLibraryItem(show);
+
+function assertIsMovie(item: LibraryItem): asserts item is Movie {
+  if (!isMovie(item)) {
+    throw new Error("Item is not a movie");
+  }
+}
+
+async function getMovieById(id: Movie["id"]) {
+  const apiData = await fetchApiData();
+
+  const libraryItem = apiData.find((item: LibraryItem) => item.id === id);
+
+  if (!libraryItem) {
+    throw new Error("Movie not found");
+  }
+
+  assertIsMovie(libraryItem);
+
+  return libraryItem;
+}
+
+const movieDetails = await getMovieById(movie.id);
+
+console.log({ movieDetails });

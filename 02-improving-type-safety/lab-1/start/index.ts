@@ -54,3 +54,21 @@ describeLibraryItem(book);
 describeLibraryItem(album);
 describeLibraryItem(movie);
 describeLibraryItem(show);
+
+async function getMovieById(id: Movie["id"]) {
+  const apiData = await fetchApiData();
+
+  const libraryItem = apiData.find(
+    (item: LibraryItem) => item.id === id
+  ) as Movie;
+
+  if (!libraryItem) {
+    throw new Error("Movie not found");
+  }
+
+  return libraryItem;
+}
+
+const movieDetails = await getMovieById(show.id);
+
+console.log({ movieDetails });
