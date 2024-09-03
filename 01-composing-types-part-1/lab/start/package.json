@@ -1,4 +1,7 @@
 {
   "name": "01-composing-types-part-1-lab-start",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^22.5.2"
+  }
 }
