@@ -1,30 +1,34 @@
-// -- Generic types example --
-
-// -- Start --
-
+// -- Non generic types --
 {
-  const nzLanguages = {
+  type Country = {
+    name: string;
+    languages: string | string[];
+  };
+
+  const nzLanguages: Country = {
     name: "New Zealand",
     languages: "English, Māori",
   };
 
   console.log(nzLanguages.languages);
 
-  const spainLanguages = {
+  const spainLanguages: Country = {
     name: "Spain",
     languages: ["Spanish", "Catalan", "Galician", "Basque", "Valencian"],
   };
 
+  // Error: Property 'join' does not exist on type 'string'. TS2339.
   console.log(spainLanguages.languages.join(", "));
 }
 
-// -- End --
-
+// -- Generic type --
 {
-  interface Country<LanguagesType> {
+  type Country<LanguagesType> = {
+    //         ^ Type parameter
     name: string;
     languages: LanguagesType;
-  }
+    //         ^ Type variable
+  };
 
   const nzLanguages: Country<string> = {
     name: "New Zealand",
@@ -41,88 +45,131 @@
   console.log(spainLanguages.languages.join(", "));
 }
 
-// TODO: More examples
-
+// -- Multiple type parameters --
 {
-  type MessageOf<MediumType> = MediumType extends { message: unknown }
-    ? MediumType["message"]
-    : never;
+  type Country<LanguagesType, PopulationType> = {
+    name: string;
+    languages: LanguagesType;
+    population: PopulationType;
+  };
 
-  interface Email {
-    message: string;
-  }
+  const newZealand: Country<string, number> = {
+    name: "New Zealand",
+    languages: "English, Māori",
+    population: 5_000_000,
+  };
 
-  interface SMS {
-    message: string;
-  }
-
-  type EmailMessage = MessageOf<Email>;
-  //   ^?
-
-  type SMSMessage = MessageOf<SMS>;
-  //   ^?
-
-  type NoMessage = MessageOf<number>;
-  //   ^?
+  const spain: Country<string[], { total: number; capital: number }> = {
+    name: "Spain",
+    languages: ["Spanish", "Catalan", "Galician", "Basque", "Valencian"],
+    population: { total: 47_000_000, capital: 3_000_000 },
+  };
 }
 
-// ----
-
+// -- Separate types vs a Generic type --
 {
-  type MessageOfV2<MediumType> = MediumType extends {
-    message: infer MessageType;
-  }
-    ? MessageType
-    : never;
+  type Country = {
+    name: string;
+    languages: string;
+  };
 
-  interface Email {
-    message: string;
-  }
+  type CountryWithLanguagesArray = {
+    name: string;
+    languages: string[];
+  };
 
-  interface SMS {
-    message: string;
-  }
+  const nzLanguages: Country = {
+    name: "New Zealand",
+    languages: "English, Māori",
+  };
 
-  type EmailMessageV2 = MessageOfV2<Email>;
-  //   ^?
+  console.log(nzLanguages.languages);
 
-  type SMSMessageV2 = MessageOfV2<SMS>;
-  //   ^?
+  const spainLanguages: CountryWithLanguagesArray = {
+    name: "Spain",
+    languages: ["Spanish", "Catalan", "Galician", "Basque", "Valencian"],
+  };
 
-  type NoMessageV2 = MessageOfV2<number>;
-  //   ^?
+  console.log(spainLanguages.languages.join(", "));
 }
 
-// ----
-
+// -- Union type vs a Generic type --
 {
-  type Photo = {
-    format: "jpeg" | "png";
-    quality: "low" | "high";
+  type CountryUnion = {
+    name: string;
+    languages: string | string[];
+    population: number | { total: number; capital: number };
   };
 
-  type EditOptions = {
-    format: "jpeg" | "png";
-    quality: "low" | "high";
-    grayscale: boolean;
-    blur: boolean;
+  const newZealand2: CountryUnion = {
+    name: "New Zealand",
+    languages: "English, Māori",
+    population: 5_000_000,
   };
 
-  type EditPhoto<PhotoType, EditOptionsType> = PhotoType extends {
-    format: infer Format;
-    quality: infer Quality;
+  if (typeof newZealand2.languages === "string") {
+    console.log(newZealand2.languages.toUpperCase());
   }
-    ? EditOptionsType extends { format: Format; quality: Quality }
-      ? PhotoType & EditOptionsType
-      : never
-    : never;
 
-  type EditedPhoto = EditPhoto<Photo, EditOptions>;
+  // ----
 
-  const photo: EditedPhoto = {
-    format: "jpeg",
-    quality: "high",
-    grayscale: true,
-    blur: false,
+  type CountryGeneric<LanguagesType, PopulationType> = {
+    name: string;
+    languages: LanguagesType;
+    population: PopulationType;
   };
+
+  const newZealand1: CountryGeneric<string, number> = {
+    name: "New Zealand",
+    languages: "English, Māori",
+    population: 5_000_000,
+  };
+
+  console.log(newZealand1.languages.toUpperCase());
+}
+
+// -- Default type parameters --
+{
+  type Country<LanguagesType = string, PopulationType = number> = {
+    name: string;
+    languages: LanguagesType;
+    population: PopulationType;
+  };
+
+  const nzLanguages: Country = {
+    name: "New Zealand",
+    languages: "English, Māori",
+    population: 5_000_000,
+  };
+
+  const spainLanguages: Country<string[], { total: number; capital: number }> =
+    {
+      name: "Spain",
+      languages: ["Spanish", "Catalan", "Galician", "Basque", "Valencian"],
+      population: { total: 47_000_000, capital: 3_000_000 },
+    };
+}
+
+// -- Generic constraints (extends) --
+{
+  type MessageBody<MediumType extends { body: unknown }> = MediumType["body"];
+
+  type Email = {
+    toAddress: string;
+    body: {
+      type: "html" | "text";
+      content: string;
+    };
+  };
+
+  type SMS = {
+    toNumber: string;
+    body: string;
+  };
+
+  type EmailBody = MessageBody<Email>;
+  //   ^?
+
+  type SMSBody = MessageBody<SMS>;
+  //   ^?
 }

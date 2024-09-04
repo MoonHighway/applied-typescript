@@ -1,41 +1,73 @@
 // -- Refresher: Intersection types --
+{
+  interface City {
+    name: string;
+    country: string;
+  }
 
-interface City {
-  name: string;
-  country: string;
+  interface Population {
+    population: number;
+  }
+
+  type CityWithPopulation = City & Population;
 }
 
-interface Population {
-  population: number;
-}
+//-- Refresher: Extending interfaces --
+{
+  interface Country {
+    name: string;
+  }
 
-type CityWithPopulation = City & Population;
+  interface CountryWithCurrency extends Country {
+    currency: string;
+  }
+
+  const country2: CountryWithCurrency = {
+    name: "New Zealand",
+    currency: "New Zealand dollar",
+  };
+}
 
 // -- Refresher: Union types --
+{
+  type CityName = "Seoul" | "Sydney" | "Seattle";
 
-type CityName = 'Seoul' | 'Sydney' | 'Seattle';
+  let cityName: CityName = "Seoul";
+  cityName = "Seattle";
+  cityName = "Sydney";
 
-let cityName: CityName = 'Seoul';
-cityName = 'Seattle';
-cityName = 'Sydney';
+  cityName = "Paris";
 
-cityName = 'Paris';
+  // ----
 
-// ----
+  interface Dog {
+    name: string;
+    legs: number;
+  }
 
-interface Dog {
-  name: string;
-  legs: number;
+  interface Bird {
+    name: string;
+    wings: number;
+  }
+
+  type Pet = Dog | Bird;
+
+  const pets: Pet[] = [
+    { name: "Doggy", legs: 4 },
+    { name: "Birdy", wings: 2 },
+  ];
 }
 
-interface Bird {
-  name: string;
-  wings: number;
+// -- Refresher: Indexed access types --
+{
+  interface City {
+    name: string;
+    country: string;
+  }
+
+  type CityName = City["name"];
+
+  const cityNames: CityName[] = ["Seoul", "Sydney", "Seattle"];
+
+  console.log({ cityNames });
 }
-
-type Pet = Dog | Bird;
-
-const pets: Pet[] = [
-  { name: 'Doggy', legs: 4 },
-  { name: 'Birdy', wings: 2 }
-];
